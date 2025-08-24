@@ -1,8 +1,6 @@
-from fastapi import APIRouter, HTTPException, status
-from typing import List
+from fastapi import APIRouter, status
 
 from ..schemas import AdminCreate
-from ..models import Admin
 from ..services import admin_service
 
 router = APIRouter(
@@ -10,7 +8,7 @@ router = APIRouter(
     tags=["Admin"],
 )
 
-@router.post("/", response_model=Admin, status_code=status.HTTP_201_CREATED)
+@router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_admin(admin: AdminCreate):
     """
     API endpoint to create a new admin user.

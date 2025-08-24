@@ -1,7 +1,7 @@
 
 from fastapi import HTTPException, status
 
-from ..models import Admin
+from ..models.Admin import Admin
 from ..schemas import AdminCreate
 from . import security_service
 
@@ -14,7 +14,7 @@ async def create_admin(admin_data: AdminCreate):
             detail="Admin already exists"
         )
     
-    hash_password = Admin.hash_password(admin_data.password)
+    hash_password = security_service.hash_password(admin_data.password)
     
     new_admin = Admin(
         hashed_password=hash_password
