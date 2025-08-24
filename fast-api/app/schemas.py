@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import Optional
 
 class AdminCreate(BaseModel):
-    hashed_password: str
+    password: str
 
 class NetworkDeviceCreate(BaseModel):
     ip_address: str
