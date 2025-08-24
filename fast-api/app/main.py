@@ -1,5 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+from .routers import admin
+
 from .database import init_db
 
 app = FastAPI(
@@ -23,6 +26,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(admin.router)
 
 @app.get("/", tags=["Root"])
 async def read_root():
