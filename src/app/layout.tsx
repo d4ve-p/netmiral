@@ -1,3 +1,5 @@
+import { Box } from "@mui/joy"
+
 export default function RootLayout({
   children,
 }: {
@@ -5,7 +7,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body style = {{ minHeight: '100vh', width: '100vw', padding: 0, margin: 0}}>
+        { children}
+      </body>
     </html>
   )
 }
