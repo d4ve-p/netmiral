@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev:frontend": "next dev --turbopack",
-    "dev:backend":"cd fast-api && .venv\\Scripts\\activate && uvicorn app.main:app --reload --host 0.0.0.0",
+    "dev:backend": "cd fast-api && .venv\\Scripts\\activate && uvicorn app.main:app --reload --host 0.0.0.0",
     "dev": "concurrently \"npm:dev:frontend\" \"npm:dev:backend\"",
     "build": "next build",
     "start": "next start",
@@ -25,6 +25,11 @@
   },
   "homepage": "https://github.com/d4ve-p/netmiral#readme",
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@fontsource/inter": "^5.2.6",
+    "@mui/icons-material": "^7.3.2",
+    "@mui/joy": "^5.0.0-beta.52",
     "concurrently": "^9.2.0",
     "next": "^15.5.0",
     "react": "^19.1.1",
