@@ -1,18 +1,22 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from contextlib import asynccontextmanager
+
 from .routers import router_admin
 
 from .database import init_db
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await init_db()
+    yield
+
 app = FastAPI(
     title="Netmiral API",
     description="API for Netmiral network device management tool",
+    lifespan=lifespan,
 )
-
-@app.on_event("startup")
-async def startup_event():
-    await init_db()
 
 # TODO: Restrict origins in production
 origins = [
