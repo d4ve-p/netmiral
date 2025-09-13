@@ -1,10 +1,10 @@
 from pydantic import BaseModel
 from typing import Optional
 
-class AdminCreate(BaseModel):
+class CreateAdmin(BaseModel):
     password: str
 
-class NetworkDeviceCreate(BaseModel):
+class CreateNetworkDevice(BaseModel):
     ip_address: str
     hostname: Optional[str]
     model: Optional[str] # e.g., 'Cisco 2901'

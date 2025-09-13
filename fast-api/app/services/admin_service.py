@@ -2,10 +2,10 @@
 from fastapi import HTTPException, status
 
 from ..models.Admin import Admin
-from ..schemas import AdminCreate
+from ..schemas import CreateAdmin
 from . import security_service
 
-async def create_admin(admin_data: AdminCreate):
+async def create_admin(admin_data: CreateAdmin):
     existing_admin = await Admin.find_one()
     
     if existing_admin:
