@@ -3,16 +3,27 @@
 import React, { useState } from 'react';
 import { Box, Typography, Input, Button, Stack } from '@mui/joy';
 import Lock from '@mui/icons-material/Lock';
+import useSWRMutation from 'swr/mutation';
+import { LOGIN_REQUEST_ENDPOINT, loginRequest } from '@/api/admin';
+import { createMutationFetcher } from '@/api/fetcher';
+
+const loginRequestMutation = createMutationFetcher(loginRequest);
 
 export default function Page() {
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState('')
+  const { trigger, isMutating, error } = useSWRMutation(LOGIN_REQUEST_ENDPOINT, loginRequestMutation);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // TODO: Add your API call logic here
     // Example: await login(password);
-    console.log('Authenticating with password:', password);
-  };
+    try {
+      await trigger({ password });
+    } catch (err) {
+      console.error('Login failed:', err);
+    }
+    
+  }
 
   return (
     <Box
@@ -97,7 +108,7 @@ export default function Page() {
             color="neutral"
             size="lg"
           />
-          <Button type="submit" fullWidth size="lg">
+          <Button type="submit" fullWidth size="lg" disabled={isMutating}>
             Unlock
           </Button>
         </Stack>

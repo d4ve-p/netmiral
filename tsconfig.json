@@ -15,6 +15,9 @@
       "@/types/*": [
         "types/*"
       ],
+      "@/api/*": [
+        "lib/api/*"
+      ]
     },
     "lib": [
       "dom",
