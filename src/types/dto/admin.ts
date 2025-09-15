@@ -5,3 +5,7 @@ export interface AdminLogin {
 export interface AdminRegister {
     password: string
 }
+
+export interface AdminCheck {
+    admin_exists: boolean
+}
