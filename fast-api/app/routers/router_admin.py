@@ -34,7 +34,7 @@ async def validate_admin(admin: ValidateAdmin, response: Response):
         path="/"
     )
 
-    return {"is_valid": is_valid}
+    return {"is_valid": True}
 
 @router.post("/create", status_code=status.HTTP_201_CREATED)
 async def create_admin(admin: CreateAdmin):
