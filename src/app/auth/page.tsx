@@ -7,7 +7,7 @@ import { CHECK_ADMIN_EXISTS_ENDPOINT, checkAdminExists } from "@/lib/api/admin"
 import LoadingPage from "@/components/ui/loading-page"
 
 export default function Page() {
-  const { data, error, isLoading } = useSWR(CHECK_ADMIN_EXISTS_ENDPOINT, checkAdminExists)
+  const { data, isLoading } = useSWR(CHECK_ADMIN_EXISTS_ENDPOINT, checkAdminExists)
 
   if(isLoading || data === undefined) {
     return <LoadingPage />

@@ -1,5 +1,3 @@
-import { Box } from "@mui/joy"
-
 export default function RootLayout({
   children,
 }: {

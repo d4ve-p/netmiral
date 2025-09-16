@@ -12,12 +12,10 @@ const registerAdminMutation = createMutationFetcher(registerAdmin);
 
 export default function RegisterPage() {
   const [password, setPassword] = useState('')
-  const { trigger, isMutating, error } = useSWRMutation(REGISTER_ADMIN_ENDPOINT, registerAdminMutation);
-
-  const router = useRouter()
+  const { trigger, isMutating } = useSWRMutation(REGISTER_ADMIN_ENDPOINT, registerAdminMutation);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    event.preventDefault()
     try {
       await trigger({ password })
       window.location.reload()
