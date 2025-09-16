@@ -6,19 +6,23 @@ import Lock from '@mui/icons-material/Lock';
 import useSWRMutation from 'swr/mutation';
 import { LOGIN_REQUEST_ENDPOINT, loginRequest } from '@/api/admin';
 import { createMutationFetcher } from '@/api/fetcher';
+import { useRouter } from 'next/navigation';
 
 const loginRequestMutation = createMutationFetcher(loginRequest);
 
 export default function LoginPage() {
   const [password, setPassword] = useState('')
-  const { trigger, isMutating, data, error } = useSWRMutation(LOGIN_REQUEST_ENDPOINT, loginRequestMutation);
+  const { trigger, isMutating, data, error } = useSWRMutation(LOGIN_REQUEST_ENDPOINT, loginRequestMutation)
+
+  const router = useRouter()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    router.push("/")
     try {
-      await trigger({ password });
+      await trigger({ password })
     } catch (err) {
-      console.error('Login failed:', err);
+      console.error('Login failed:', err)
     }
     
   }
