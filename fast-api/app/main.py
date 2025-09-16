@@ -3,8 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from contextlib import asynccontextmanager
 
+from . import constants
 from .routers import router_admin
-
 from .database import init_db
 
 @asynccontextmanager
@@ -18,14 +18,9 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# TODO: Restrict origins in production
-origins = [
-    "*"
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=constants.CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
