@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, Response
 
 from ..schemas import CreateAdmin, ValidateAdmin
 from ..services import admin_service
@@ -18,12 +18,22 @@ async def check_admin():
     return {"admin_exists": exists}
 
 @router.post("/validate", status_code=status.HTTP_200_OK)
-async def validate_admin(admin: ValidateAdmin):
+async def validate_admin(admin: ValidateAdmin, response: Response):
     """
     API endpoint to validate admin credentials.
     """
     
-    is_valid = await admin_service.validate_admin(admin)
+    token = await admin_service.validate_admin(admin)
+
+    response.set_cookie(
+        key="auth_token",
+        value=f"Bearer {token.access_token}",
+        httponly=True,
+        secure=False, 
+        samesite="lax",
+        path="/"
+    )
+
     return {"is_valid": is_valid}
 
 @router.post("/create", status_code=status.HTTP_201_CREATED)

@@ -1,7 +1,10 @@
+from datetime import timedelta
 
 from fastapi import HTTPException, status
 
+from ... import constants
 from ..models.Admin import Admin
+from ..models.Token import Token
 from ..schemas import CreateAdmin, ValidateAdmin
 from . import security_service
 
@@ -28,9 +31,17 @@ async def validate_admin(admin_data: ValidateAdmin):
     admin = await Admin.find_one()
     
     if not admin or not security_service.verify_password(admin_data.password, admin.hashed_password):
-        return False
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid credentials"
+        )
     
-    return True
+    access_token_expires = timedelta(minutes=constants.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = security_service.create_access_token(
+        data={"sub": Admin.id}, expired_delta=access_token_expires
+    )
+
+    return Token(access_token=access_token, token_type="bearer")
 
 async def has_admin():
     admin = await Admin.find_one()
