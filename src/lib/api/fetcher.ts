@@ -8,15 +8,20 @@ class ApiError extends Error {
 }
 
 async function http<T>(path: string, config: RequestInit): Promise<T> {
-  const request = new Request(`${constants.BACKEND_URL}${path}`, config);
-  const response = await fetch(request);
+    const mergedConfig: RequestInit = {
+        ...config,
+        credentials: 'include'
+    }
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    const errorMessage = errorData.message || `API error: ${response.status}`;
-    throw new ApiError(errorMessage, response.status);
-  }
-  return response.json();
+    const request = new Request(`${constants.BACKEND_URL}${path}`, mergedConfig);
+    const response = await fetch(request);
+
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = errorData.message || `API error: ${response.status}`;
+        throw new ApiError(errorMessage, response.status);
+    }
+    return response.json();
 }
 
 export const fetcher = {
