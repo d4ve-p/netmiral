@@ -18,9 +18,10 @@ export default function LoginPage() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    router.push("/")
+    
     try {
       await trigger({ password })
+      router.push('/')  
     } catch (err) {
       console.error('Login failed:', err)
     }
@@ -98,7 +99,7 @@ export default function LoginPage() {
             NETMIRAL
         </Typography>
 
-        {!data?.is_valid ? (
+        {error && data !== undefined ? (
             <Typography level="h3" sx={{ color: 'warning.400', zIndex: 1 }}>
             Invalid Credentials.
             </Typography>

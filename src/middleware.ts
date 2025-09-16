@@ -16,7 +16,7 @@ export function middleware(request: NextRequest) {
     }
 
     if (token && pathname === '/auth') {
-        const dashboardUrl = new URL('/dashboard', request.url);
+        const dashboardUrl = new URL('/', request.url);
         return NextResponse.redirect(dashboardUrl);
     }
 
