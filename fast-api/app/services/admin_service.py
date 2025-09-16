@@ -2,7 +2,7 @@ from datetime import timedelta
 
 from fastapi import HTTPException, status
 
-from ... import constants
+from .. import constants
 from ..models.Admin import Admin
 from ..models.Token import Token
 from ..schemas import CreateAdmin, ValidateAdmin
