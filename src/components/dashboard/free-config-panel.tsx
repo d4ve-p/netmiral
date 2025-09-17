@@ -10,7 +10,7 @@ import Typography from '@mui/joy/Typography';
 import Textarea from '@mui/joy/Textarea';
 import { TerminalSquare, Save, Undo2 } from 'lucide-react'; 
 
-export default function FreeConfigCard() {
+export default function FreeConfigPanel() {
   const mockConfig = `!
 ! Last configuration change at 10:00:00 UTC Wed Sep 17 2025
 !
