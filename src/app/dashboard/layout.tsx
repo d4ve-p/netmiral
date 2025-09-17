@@ -10,13 +10,7 @@ import AddIcon from '@mui/icons-material/Add';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { useModal } from '@/contexts/modal-context';
 import ModalType from '@/types/modal-type';
-
-function triggerModal(
-  callback: (arg: ModalType) => void, 
-  modalType: ModalType
-) {
-  return () => callback(modalType);
-}
+import { triggerModal } from '@/lib/helper';
 
 export default function DashboardLayout({
   children,
