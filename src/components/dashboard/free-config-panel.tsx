@@ -7,8 +7,9 @@ import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import Card from '@mui/joy/Card';
 import Typography from '@mui/joy/Typography';
-import Textarea from '@mui/joy/Textarea';
 import { TerminalSquare, Save, Undo2 } from 'lucide-react'; 
+import { CodeEditor } from '../ui/code-editor';
+import { useState } from 'react';
 
 export default function FreeConfigPanel() {
   const mockConfig = `!
@@ -25,6 +26,7 @@ interface GigabitEthernet0/0
  ip address 192.168.1.1 255.255.255.0
  negotiation auto
 !`;
+  const [config, setConfig] = useState(mockConfig);
 
   return (
     <Card variant="outlined" sx={{ bgcolor: '#0A111C', borderColor: '#273B53', height: '100%' }}>
@@ -47,17 +49,7 @@ interface GigabitEthernet0/0
       
       {/* TODO: This Textarea should be replaced with a proper code editor component
           like React CodeMirror or Monaco Editor for syntax highlighting. */}
-      <Textarea
-        defaultValue={mockConfig}
-        minRows={20}
-        maxRows={30}
-        sx={{
-          bgcolor: '#020508', 
-          color: '#A1ACC2',
-          fontFamily: 'monospace',
-          '--Textarea-focusedHighlight': '1px solid #22d3ee',
-        }}
-      />
+      <CodeEditor value={mockConfig} onChange={setConfig} />
     </Card>
   );
 }
