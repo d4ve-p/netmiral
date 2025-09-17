@@ -30,10 +30,10 @@ export default function DeviceConfigPanel({ selectedDevice }: { selectedDevice: 
       <Box>
         <Button
           variant="plain"
-          color="neutral"
+          color="primary"
           startDecorator={<ArrowLeft />}
           onClick={() => setActiveConfig(null)}
-          sx={{ mb: 2 }}
+          sx={{ mb: 2, transition: '0.2s ease' }}
         >
           Back to Options
         </Button>
