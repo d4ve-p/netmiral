@@ -1,3 +1,6 @@
+import ModalManager from "@/components/modals/modal-manager"
+import { ModalProvider } from "@/contexts/modal-context"
+
 export default function RootLayout({
   children,
 }: {
@@ -6,7 +9,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body style = {{ minHeight: '100vh', width: '100vw', padding: 0, margin: 0}}>
-        { children}
+        <ModalProvider>
+          { children }
+          <ModalManager />
+        </ModalProvider>
       </body>
     </html>
   )
