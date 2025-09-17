@@ -8,6 +8,7 @@ import Typography from '@mui/joy/Typography';
 import { ArrowLeft, TerminalSquare, Network, ShieldCheck } from 'lucide-react';
 import ConfigType from '@/types/config-type';
 import OptionCard from './option-card';
+import { ConfigRenderMap } from '@/lib/ui-helper/ui-map';
 
 export default function DeviceConfigPanel({ selectedDevice }: { selectedDevice: IDevice }) {
   const [activeConfig, setActiveConfig] = useState<ConfigType | null>(null);
@@ -26,6 +27,8 @@ export default function DeviceConfigPanel({ selectedDevice }: { selectedDevice: 
   }
 
   if (activeConfig) {
+    const ComponentToRender = ConfigRenderMap[activeConfig]
+
     return (
       <Box>
         <Button
@@ -39,6 +42,7 @@ export default function DeviceConfigPanel({ selectedDevice }: { selectedDevice: 
         </Button>
 
         {/* TODO: Render the correct detailed config card based on the active state */}
+        { activeConfig ? <ComponentToRender /> : null }
       </Box>
     );
   }
