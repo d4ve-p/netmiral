@@ -76,7 +76,8 @@ export function AccessListConfigPanel() {
                 bgcolor: '#020508', 
                 borderRadius: 'sm', 
                 border: '1px solid',
-                borderColor: '#273B53'
+                borderColor: '#273B53',
+                overflow: 'hidden'
                 }}
             >
                 <AccordionSummary color='primary' sx={{ fontWeight: 600 }}>
