@@ -12,6 +12,8 @@ import AccordionSummary, { accordionSummaryClasses } from '@mui/joy/AccordionSum
 import AccordionDetails from '@mui/joy/AccordionDetails';
 import { ShieldCheck, Plus, ArrowRight, X, Trash } from 'lucide-react';
 import { IconButton, ListItemDecorator, Tooltip } from '@mui/joy';
+import AclRuleItem from './acl-rule-item';
+import { useState } from 'react';
 
 const mockAcls = [
   { 
@@ -32,6 +34,13 @@ const mockAcls = [
 ];
 
 export function AccessListConfigPanel() {
+    const [rules, setRules] = useState() // TODO: Store initial & keep updating rule whenever there's an update
+    
+    const handleUpdateRule = () => { } // TODO: Fill in handle update rule
+
+    const handleDeleteRule = () => { } // TODO: Fill in handle delete rule
+
+
     return (
     <Card variant="outlined" sx={{ bgcolor: '#0A111C', borderColor: '#273B53' }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
@@ -76,49 +85,13 @@ export function AccessListConfigPanel() {
                 <AccordionDetails>
                 <List>
                     {acl.rules.map((rule, index) => {
-                    const ruleIcon = rule.includes('permit') 
-                        ? <ArrowRight size={16} color="#10B981" /> 
-                        : <X size={16} color="#EF4444" />;
-
                     return (
                         <ListItem key={index}>
-                            <Box
-                                component="div"
-                                display="flex"
-                                width="100%"
-                                justifyContent="space-between"
-                                alignItems="center"
-                            >
-                                <Box
-                                    component="div"
-                                    display="flex"
-                                    gap="1"
-                                >
-                                    <ListItemDecorator>
-                                    {ruleIcon}
-                                    </ListItemDecorator>
-                                    <Typography 
-                                        level="body-sm" 
-                                        sx={{ fontFamily: 'monospace', color: '#A1ACC2' }}
-                                    >
-                                        {rule}
-                                    </Typography>
-                                </Box>
-                                <ListItemDecorator>
-                                    <IconButton 
-                                        size="sm" 
-                                        variant="plain" 
-                                        color="neutral" 
-                                        sx={{
-                                            color: '#A1ACC2', 
-                                            '&:hover': {
-                                                color: '#EF4444', 
-                                            },
-                                    }}>
-                                        <Trash />
-                                    </IconButton>
-                                </ListItemDecorator>
-                            </Box>
+                            <AclRuleItem
+                                rule={{ id: index, text: rule }}
+                                onDelete={handleDeleteRule}
+                                onUpdate={handleUpdateRule}
+                            />
                         </ListItem>
                     );
                     })}
