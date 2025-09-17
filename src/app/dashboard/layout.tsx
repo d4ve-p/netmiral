@@ -8,12 +8,23 @@ import Button from '@mui/joy/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
+import { useModal } from '@/contexts/modal-context';
+import ModalType from '@/types/modal-type';
+
+function triggerModal(
+  callback: (arg: ModalType) => void, 
+  modalType: ModalType
+) {
+  return () => callback(modalType);
+}
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { openModal } = useModal(); 
+
   return (
     <Box
       sx={{
@@ -82,10 +93,10 @@ export default function DashboardLayout({
             variant="soft"
           />
           <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1 }}>
-             <Button startDecorator={<UploadFileIcon />} variant="soft">
+             <Button startDecorator={<UploadFileIcon />} variant="soft" onClick={triggerModal(openModal, ModalType.LocalDevice)}>
               From Config
             </Button>
-            <Button startDecorator={<AddIcon />} variant="soft">
+            <Button startDecorator={<AddIcon />} variant="soft" onClick={triggerModal(openModal, ModalType.ActiveDevice)}>
               Active Device
             </Button>
           </Box>

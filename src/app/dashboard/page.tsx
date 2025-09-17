@@ -1,4 +1,3 @@
-import Typography from '@mui/joy/Typography';
 import Card from '@mui/joy/Card';
 import DeviceConfigPanel from '@/components/dashboard/device-config-panel';
 
