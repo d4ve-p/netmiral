@@ -13,3 +13,8 @@ class CreateNetworkDevice(BaseModel):
 
 class ValidateAdmin(BaseModel):
     password: str
+
+class DeviceCredentials(BaseModel):
+    username: str
+    password: str
+    enable_password: Optional[str] = None
