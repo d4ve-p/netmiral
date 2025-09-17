@@ -10,8 +10,8 @@ import AccordionGroup from '@mui/joy/AccordionGroup';
 import Accordion from '@mui/joy/Accordion';
 import AccordionSummary, { accordionSummaryClasses } from '@mui/joy/AccordionSummary';
 import AccordionDetails from '@mui/joy/AccordionDetails';
-import { ShieldCheck, Plus, ArrowRight, X } from 'lucide-react';
-import { ListItemDecorator } from '@mui/joy';
+import { ShieldCheck, Plus, ArrowRight, X, Trash } from 'lucide-react';
+import { IconButton, ListItemDecorator, Tooltip } from '@mui/joy';
 
 const mockAcls = [
   { 
@@ -82,15 +82,43 @@ export function AccessListConfigPanel() {
 
                     return (
                         <ListItem key={index}>
-                            <ListItemDecorator>
-                                {ruleIcon}
-                            </ListItemDecorator>
-                            <Typography 
-                                level="body-sm" 
-                                sx={{ fontFamily: 'monospace', color: '#A1ACC2' }}
+                            <Box
+                                component="div"
+                                display="flex"
+                                width="100%"
+                                justifyContent="space-between"
+                                alignItems="center"
                             >
-                                {rule}
-                            </Typography>
+                                <Box
+                                    component="div"
+                                    display="flex"
+                                    gap="1"
+                                >
+                                    <ListItemDecorator>
+                                    {ruleIcon}
+                                    </ListItemDecorator>
+                                    <Typography 
+                                        level="body-sm" 
+                                        sx={{ fontFamily: 'monospace', color: '#A1ACC2' }}
+                                    >
+                                        {rule}
+                                    </Typography>
+                                </Box>
+                                <ListItemDecorator>
+                                    <IconButton 
+                                        size="sm" 
+                                        variant="plain" 
+                                        color="neutral" 
+                                        sx={{
+                                            color: '#A1ACC2', 
+                                            '&:hover': {
+                                                color: '#EF4444', 
+                                            },
+                                    }}>
+                                        <Trash />
+                                    </IconButton>
+                                </ListItemDecorator>
+                            </Box>
                         </ListItem>
                     );
                     })}
