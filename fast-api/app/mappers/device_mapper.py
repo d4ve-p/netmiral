@@ -9,19 +9,21 @@ def device_create_schema_to_model(
     common_data = schema.model_dump(exclude_unset=True)
 
     common_data.pop('credentials', None)
+    common_data.pop('ip_address', None)
+    common_data.pop('status', None)
 
     model = NetworkDevice.NetworkDevice(
         hostname=schema.hostname,
         device_type=str(schema.device_type),
         location=schema.location,
-        ip_address=schema.ip_address,
-        status=str(schema.status),
         model=schema.model,
         os_version=schema.os_version
     )
 
     if schema.device_type == NetworkDevice.DeviceType.ACTIVE:
         model.credentials = schema.credentials
+        model.ip_address = schema.ip_address
+        model.status = schema.status
     
     return model
 
@@ -31,7 +33,7 @@ def device_model_to_show_schema(model: NetworkDevice) -> device_schema.ShowNetwo
         device_type=model.device_type,
         location=model.location,
         ip_address=model.ip_address,
-        status=model.status  ,
+        status=model.status,
         model=model.model,
         os_version=model.os_version,
         
