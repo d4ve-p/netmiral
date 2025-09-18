@@ -17,9 +17,12 @@ class NetworkDeviceBase(BaseModel):
     model: Optional[str] = None     
     os_version: Optional[str] = None
 
+class CreateLocalNetworkDevice(NetworkDeviceBase):
+    device_type = DeviceType.LOCAL
 
-class CreateNetworkDevice(NetworkDeviceBase):
-    credentials: Optional[DeviceCredentials] = None
+class CreateActiveNetworkDevice(NetworkDeviceBase):
+    device_type = DeviceType.ACTIVE
+    credentials: DeviceCredentials = None
 
 class ShowNetworkDevice(NetworkDeviceBase):
     id: str = Field(..., alias="_id")
