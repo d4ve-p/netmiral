@@ -1,6 +1,9 @@
-from typing import Optional
 from beanie import Document, Indexed
+from pydantic import Field
+from typing import Optional
 
+
+from datetime import datetime
 from enum import Enum
 
 from . import DOCUMENT_MODELS
@@ -16,8 +19,9 @@ class DeviceStatus(str, Enum):
     UNKNOWN = 'unknown'
 
 class NetworkDevice(Document):
-    name: Indexed(str, unique=True) 
+    hostname: Indexed(str, unique=True) 
     device_type: DeviceType
+    location: Optional[str] # e.g., 'Data Center 1', 'Office 2'
 
     ip_address: Optional[str] = None # Required if active
     status: Optional[DeviceStatus] = 'unknown' # required if active
@@ -29,6 +33,8 @@ class NetworkDevice(Document):
     # --- Optional Metadata Fields ---
     model: Optional[str] = None     
     os_version: Optional[str] = None 
+
+    created_at: datetime = Field(default_factory=datetime.timezone.utc)
     
     class Settings:
         name = "devices"
