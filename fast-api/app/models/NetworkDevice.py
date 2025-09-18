@@ -7,7 +7,7 @@ from datetime import datetime
 from enum import Enum
 
 from . import DOCUMENT_MODELS
-from ..schemas import DeviceCredentials
+from ..schemas import device as device_schema
 
 class DeviceType(str, Enum):
     ACTIVE = 'active'
@@ -26,7 +26,7 @@ class NetworkDevice(Document):
     ip_address: Optional[str] = None # Required if active
     status: Optional[DeviceStatus] = 'unknown' # required if active
 
-    credentials: Optional[DeviceCredentials] = None
+    credentials: Optional[device_schema.DeviceCredentials] = None
 
     config_text = None # Required for both
     
