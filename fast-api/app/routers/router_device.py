@@ -13,6 +13,8 @@ async def create_network_device(
     file: UploadFile,
     form_data: device_dependencies.CreateLocalDeviceForm = Depends()
 ):
+    print("a")
     device_schema = form_data.to_schema()
 
     return await device_service.create_local_device(device_schema, file)
+

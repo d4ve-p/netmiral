@@ -17,7 +17,8 @@ def device_create_schema_to_model(
         device_type=schema.device_type,
         location=schema.location,
         model=schema.model,
-        os_version=schema.os_version
+        os_version=schema.os_version,
+        config_text=""
     )
 
     if schema.device_type == NetworkDevice.DeviceType.ACTIVE:
@@ -29,6 +30,7 @@ def device_create_schema_to_model(
 
 def device_model_to_show_schema(model: NetworkDevice) -> device_schema.ShowNetworkDevice:
     return device_schema.ShowNetworkDevice(
+        _id= str(model.id),
         hostname=model.hostname,
         device_type=model.device_type,
         location=model.location,

@@ -8,6 +8,7 @@ from fastapi import UploadFile
 
 
 async def create_local_device(network_device: device_schema.CreateLocalNetworkDevice, config_file: UploadFile) -> device_schema.ShowNetworkDevice:
+    print("a")
     device = await NetworkDevice.find_one(
         Eq(NetworkDevice.hostname, network_device.hostname)
     )
