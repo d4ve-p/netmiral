@@ -9,6 +9,20 @@ router = APIRouter(
     tags=["Device"]
 )
 
+@router.get("/", status_code=status.HTTP_200_OK)
+async def get_device(
+    id: str = None,
+    search: str = None
+):
+    if search:
+        return await device_service.get_search_device(search)
+    
+    if id:
+        return await device_service.get_device(id)
+    
+    return await device_service.get_all_devices()
+    
+
 @router.post("/local", status_code=status.HTTP_201_CREATED)
 async def create_local_network_device(
     file: UploadFile,

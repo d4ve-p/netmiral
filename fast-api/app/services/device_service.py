@@ -1,12 +1,45 @@
+import re
+from typing import List
+
+from beanie.operators import Eq
+from fastapi import UploadFile
+
 from ..exceptions import http_exceptions
 from ..schemas import device as device_schema
 from ..models.NetworkDevice import NetworkDevice
 from ..mappers import device_mapper
 from ..dependencies import db_helper
 
-from beanie.operators import Eq
-from fastapi import UploadFile
+async def get_device(id: str) -> device_schema.ShowActiveNetworkDevice:
+    if not db_helper.validate_object_id(id):
+        raise http_exceptions.InvalidIdException
+        
+    device = await NetworkDevice.get(id)
+    
+    if not device:
+        raise http_exceptions.DeviceNotExistsException
+    
+    return device_mapper.device_model_to_show_schema(device)
 
+async def get_all_devices() -> List[device_schema.ShowNetworkDevice]:
+    devices = await NetworkDevice.all().to_list()
+    
+    return [
+        device_mapper.device_model_to_show_schema(device) 
+        for device in devices 
+    ]
+    
+async def get_search_device(name_query: str) -> List[device_schema.ShowNetworkDevice]:
+    search_regex = re.compile(name_query, re.IGNORECASE)
+    
+    devices = await NetworkDevice.find_many(
+        {"hostname": search_regex}
+    ).to_list()
+    
+    return [
+        device_mapper.device_model_to_show_schema(device)
+        for device in devices
+    ]
 
 async def create_local_device(network_device: device_schema.CreateLocalNetworkDevice, config_file: UploadFile) -> device_schema.ShowNetworkDevice:
     device = await NetworkDevice.find_one(
