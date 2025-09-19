@@ -5,9 +5,14 @@ from datetime import datetime
 
 from ..types.device import *
 
-class DeviceCredentials(BaseModel):
+class CreateDeviceCredentials(BaseModel):
     username: str
     password: str
+    enable_password: Optional[str] = None
+
+class UpdateDeviceCredentials(BaseModel):
+    username: Optional[str] = None
+    password: Optional[str] = None
     enable_password: Optional[str] = None
 
 class NetworkDeviceBase(BaseModel):
@@ -18,21 +23,36 @@ class NetworkDeviceBase(BaseModel):
     model: Optional[str] = None     
     os_version: Optional[str] = None
 
-class CreateLocalNetworkDevice(NetworkDeviceBase):
-    device_type: DeviceType = DeviceType.LOCAL
-
-class CreateActiveNetworkDevice(NetworkDeviceBase):
+class ActiveNetworkDevice(NetworkDeviceBase):
     device_type: DeviceType = DeviceType.ACTIVE
 
-    credentials: DeviceCredentials
     ip_address: str
     status: DeviceStatus
     config_text: Optional[str] = None
+
+class CreateLocalNetworkDevice(NetworkDeviceBase):
+    device_type: DeviceType = DeviceType.LOCAL
+
+class CreateActiveNetworkDevice(ActiveNetworkDevice):
+    credentials: CreateDeviceCredentials
 
 class ShowNetworkDevice(NetworkDeviceBase):
     id: str = Field(..., alias="_id")
     created_at: datetime
     config_text: Optional[str]
+    device_type: DeviceType
+
+class ShowActiveNetworkDevice(ShowNetworkDevice):
+    ip_address: str
+    status: DeviceStatus
+
+class UpdateLocalNetworkDevice(CreateLocalNetworkDevice):
+    id: str
+    config_text: Optional[str] = None
+
+class UpdateActiveNetworkDevice(ActiveNetworkDevice):
+    id: str
+    credentials: Optional[UpdateDeviceCredentials] = None
 
 class DeleteNetworkDevice(BaseModel):
     id: str

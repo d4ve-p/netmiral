@@ -18,7 +18,7 @@ class NetworkDevice(Document):
     ip_address: Optional[str] = None # Required if active
     status: Optional[DeviceStatus] = 'unknown' # required if active
 
-    credentials: Optional[device_schema.DeviceCredentials] = None
+    credentials: Optional[device_schema.CreateDeviceCredentials] = None
 
     config_text: Optional[str]
     
