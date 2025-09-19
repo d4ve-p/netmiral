@@ -12,7 +12,7 @@ class DeviceCredentials(BaseModel):
 
 class NetworkDeviceBase(BaseModel):
     hostname: str
-    location: Optional[str] # e.g., 'Data Center 1', 'Office 2'
+    location: Optional[str] = None # e.g., 'Data Center 1', 'Office 2'
     
     # --- Optional Metadata Fields ---
     model: Optional[str] = None     
@@ -27,7 +27,7 @@ class CreateActiveNetworkDevice(NetworkDeviceBase):
     credentials: DeviceCredentials
     ip_address: str
     status: DeviceStatus
-    config_text: Optional[str]
+    config_text: Optional[str] = None
 
 class ShowNetworkDevice(NetworkDeviceBase):
     id: str = Field(..., alias="_id")

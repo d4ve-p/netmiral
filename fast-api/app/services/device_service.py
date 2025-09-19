@@ -23,3 +23,17 @@ async def create_local_device(network_device: device_schema.CreateLocalNetworkDe
     await new_device.insert()
 
     return device_mapper.device_model_to_show_schema(new_device)
+
+async def create_active_device(network_device: device_schema.CreateActiveNetworkDevice):
+    device = await NetworkDevice.find_one(
+        Eq(NetworkDevice.hostname, network_device.hostname)
+    )
+
+    if(device):
+        raise http_exceptions.DeviceAlreadyExistsException
+
+    new_device = device_mapper.device_create_schema_to_model(network_device)
+
+    await new_device.insert()
+
+    return device_mapper.device_model_to_show_schema(new_device)
