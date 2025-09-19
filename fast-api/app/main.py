@@ -7,6 +7,8 @@ from . import constants
 from .routers import router_device, router_admin
 from .database import init_db
 
+from .exceptions import *
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_db()
@@ -28,6 +30,8 @@ app.add_middleware(
 
 app.include_router(router_admin.router)
 app.include_router(router_device.router)
+
+app.add_exception_handler(CustomHTTPException, custom_http_exception_handler)
 
 @app.get("/", tags=["Root"])
 async def read_root():
