@@ -31,3 +31,14 @@ async def delete_network_device(
     id = schema.id
     return await device_service.delete_device(id)
 
+@router.put("/local", status_code=status.HTTP_200_OK)
+async def update_local_device(
+    schema: UpdateLocalNetworkDevice
+):
+    return await device_service.update_local_device(schema)
+
+@router.put("/active", status_code=status.HTTP_200_OK)
+async def update_active_device(
+    schema: UpdateActiveNetworkDevice
+):
+    return await device_service.update_active_device(schema)

@@ -25,7 +25,7 @@ async def create_local_device(network_device: device_schema.CreateLocalNetworkDe
 
     return device_mapper.device_model_to_show_schema(new_device)
 
-async def create_active_device(network_device: device_schema.CreateActiveNetworkDevice):
+async def create_active_device(network_device: device_schema.CreateActiveNetworkDevice) -> device_schema.ShowNetworkDevice:
     device = await NetworkDevice.find_one(
         Eq(NetworkDevice.hostname, network_device.hostname)
     )
@@ -49,4 +49,37 @@ async def delete_device(id: str):
         raise http_exceptions.DeviceNotExistsException()
     
     await device.delete()
-    return device
+
+    return device_mapper.device_model_to_show_schema(device)
+
+async def update_local_device(schema: device_schema.UpdateLocalNetworkDevice) -> device_schema.ShowNetworkDevice:
+    if not db_helper.validate_object_id(schema.id):
+        raise http_exceptions.InvalidIdException
+    
+    device = await NetworkDevice.get(schema.id)
+    if not device:
+        raise http_exceptions.DeviceNotExistsException
+    
+    update_data = schema.model_dump(exclude={"id"}, exclude_unset=True)
+
+    await device.set(update_data)
+
+    await device.save()
+
+    return device_mapper.device_model_to_show_schema(device)
+
+async def update_active_device(schema: device_schema.UpdateActiveNetworkDevice) -> device_schema.ShowNetworkDevice:
+    if not db_helper.validate_object_id(schema.id):
+        raise http_exceptions.InvalidIdException
+    
+    device = await NetworkDevice.get(schema.id)
+    if not device:
+        raise http_exceptions.DeviceNotExistsException
+
+    update_data = schema.model_dump(exclude={"id"}, exclude_unset=True)
+
+    await device.set(update_data)
+
+    await device.save()
+
+    return device_mapper.device_model_to_show_schema(device)
