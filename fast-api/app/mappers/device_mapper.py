@@ -13,7 +13,7 @@ def device_create_schema_to_model(
     common_data.pop('ip_address', None)
     common_data.pop('status', None)
 
-    model = NetworkDevice.NetworkDevice(
+    model = NetworkDevice(
         hostname=schema.hostname,
         device_type=schema.device_type,
         location=schema.location,
@@ -22,7 +22,7 @@ def device_create_schema_to_model(
         config_text=""
     )
 
-    if schema.device_type == NetworkDevice.DeviceType.ACTIVE:
+    if schema.device_type == DeviceType.ACTIVE:
         model.credentials = schema.credentials
         model.ip_address = schema.ip_address
         model.status = schema.status
