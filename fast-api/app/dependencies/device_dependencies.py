@@ -1,7 +1,6 @@
 from fastapi import Form
 from typing import Optional
 
-from ..types.device import DeviceStatus
 from ..schemas import device
 
 class CreateLocalDeviceForm:
