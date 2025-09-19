@@ -33,3 +33,6 @@ class ShowNetworkDevice(NetworkDeviceBase):
     id: str = Field(..., alias="_id")
     created_at: datetime
     config_text: Optional[str]
+
+class DeleteNetworkDevice(BaseModel):
+    id: str
