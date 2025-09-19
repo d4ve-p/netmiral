@@ -24,3 +24,10 @@ async def create_active_network_device(
 ):
     return await device_service.create_active_device(schema)
 
+@router.delete("/", status_code=status.HTTP_200_OK)
+async def delete_network_device(
+    schema: DeleteNetworkDevice
+):
+    id = schema.id
+    return await device_service.delete_device(id)
+
