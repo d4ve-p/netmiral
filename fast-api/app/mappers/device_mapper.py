@@ -1,7 +1,8 @@
 from typing import Union
 
-from ..models import NetworkDevice
+from ..models.NetworkDevice import NetworkDevice
 from ..schemas import device as device_schema
+from ..types.device import DeviceType
 
 def device_create_schema_to_model(
         schema: Union[device_schema.CreateLocalNetworkDevice, device_schema.CreateActiveNetworkDevice]
@@ -28,17 +29,11 @@ def device_create_schema_to_model(
     
     return model
 
-def device_model_to_show_schema(model: NetworkDevice) -> device_schema.ShowNetworkDevice:
+def device_model_to_show_schema(model: NetworkDevice) -> device_schema.ShowNetworkDevice | device_schema.ShowActiveNetworkDevice:
+    if model.device_type == DeviceType.ACTIVE:
+        return device_schema.ShowActiveNetworkDevice(_id=str(model.id), **model.model_dump())
+
     return device_schema.ShowNetworkDevice(
         _id= str(model.id),
-        hostname=model.hostname,
-        device_type=model.device_type,
-        location=model.location,
-        ip_address=model.ip_address,
-        status=model.status,
-        model=model.model,
-        os_version=model.os_version,
-        
-        config_text=model.config_text,
-        created_at=model.created_at
+        **model.model_dump()
     )
