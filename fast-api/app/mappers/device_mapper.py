@@ -14,7 +14,7 @@ def device_create_schema_to_model(
 
     model = NetworkDevice.NetworkDevice(
         hostname=schema.hostname,
-        device_type=str(schema.device_type),
+        device_type=schema.device_type,
         location=schema.location,
         model=schema.model,
         os_version=schema.os_version
@@ -38,5 +38,5 @@ def device_model_to_show_schema(model: NetworkDevice) -> device_schema.ShowNetwo
         os_version=model.os_version,
         
         config_text=model.config_text,
-        created_at=model.created_at,
+        created_at=model.created_at
     )
