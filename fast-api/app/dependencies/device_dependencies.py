@@ -1,7 +1,7 @@
 from fastapi import Form
 from typing import Optional
 
-from ..models.NetworkDevice import DeviceStatus
+from ..types.device import DeviceStatus
 from ..schemas import device
 
 class CreateLocalDeviceForm:
@@ -22,7 +22,7 @@ class CreateLocalDeviceForm:
             hostname=self.hostname,
             location=self.location,
             model=self.model,
-            os_version=self.os_version
+            os_version=self.os_version,
         )
 
 class CreateActiveDeviceForm(CreateLocalDeviceForm):
@@ -58,5 +58,5 @@ class CreateActiveDeviceForm(CreateLocalDeviceForm):
             os_version=self.os_version,
             ip_address=self.ip_address,
             status=self.status,
-            credentials=self.credentials
+            credentials=self.credentials,
         )

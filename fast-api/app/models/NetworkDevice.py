@@ -3,20 +3,12 @@ from pydantic import Field
 from typing import Optional
 
 
-from datetime import datetime
-from enum import Enum
+import datetime
+
 
 from . import DOCUMENT_MODELS
 from ..schemas import device as device_schema
-
-class DeviceType(str, Enum):
-    ACTIVE = 'active'
-    LOCAL = 'local'
-
-class DeviceStatus(str, Enum):
-    ONLINE = 'online'
-    OFFLINE = 'offline'
-    UNKNOWN = 'unknown'
+from ..types.device import *
 
 class NetworkDevice(Document):
     hostname: Indexed(str, unique=True) 
@@ -28,13 +20,13 @@ class NetworkDevice(Document):
 
     credentials: Optional[device_schema.DeviceCredentials] = None
 
-    config_text = None # Required for both
+    config_text: Optional[str]
     
     # --- Optional Metadata Fields ---
     model: Optional[str] = None     
     os_version: Optional[str] = None 
 
-    created_at: datetime = Field(default_factory=datetime.timezone.utc)
+    created_at: datetime.datetime = Field(default_factory=lambda: datetime.datetime.now(datetime.timezone.utc))
     
     class Settings:
         name = "devices"
