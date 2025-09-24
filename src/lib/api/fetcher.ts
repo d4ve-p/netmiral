@@ -44,7 +44,22 @@ export const fetcher = {
    * @returns A promise that resolves with the parsed JSON response.
    */
     post: <T, U>(path: string, body: T, config?: RequestInit): Promise<U> => {
-        const init = { method: 'POST', body: JSON.stringify(body), headers: {'Content-Type': 'application/json'}, ...config };
+        const init = { method: 'POST', ...config };
+
+        // Checks if config exists, and not instance of FormData
+        if(!(body instanceof FormData)) {
+            let headers: HeadersInit = {}
+            headers['Content-Type'] = 'application/json'
+
+            init.body = JSON.stringify(body)
+            init.headers = headers
+        } else {
+            init.body = body
+        }
+
+        console.log(init)
+
+        
         return http<U>(path, init);
     },
 
