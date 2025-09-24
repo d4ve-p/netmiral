@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, IPvAnyAddress
 from typing import Optional
 
 from datetime import datetime
@@ -26,7 +26,7 @@ class NetworkDeviceBase(BaseModel):
 class ActiveNetworkDevice(NetworkDeviceBase):
     device_type: DeviceType = DeviceType.ACTIVE
 
-    ip_address: str
+    ip_address: IPvAnyAddress
     config_text: Optional[str] = None
 
 class CreateLocalNetworkDevice(NetworkDeviceBase):
@@ -42,7 +42,7 @@ class ShowNetworkDevice(NetworkDeviceBase):
     device_type: DeviceType
 
 class ShowActiveNetworkDevice(ShowNetworkDevice):
-    ip_address: str
+    ip_address: Optional[IPvAnyAddress]
     status: DeviceStatus
 
 class UpdateLocalNetworkDevice(CreateLocalNetworkDevice):

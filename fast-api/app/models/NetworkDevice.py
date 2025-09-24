@@ -1,5 +1,5 @@
 from beanie import Document, Indexed
-from pydantic import Field
+from pydantic import Field, IPvAnyAddress
 from typing import Optional
 
 
@@ -15,7 +15,7 @@ class NetworkDevice(Document):
     device_type: DeviceType
     location: Optional[str] # e.g., 'Data Center 1', 'Office 2'
 
-    ip_address: Optional[str] = None # Required if active
+    ip_address: Optional[IPvAnyAddress] = None # Required if active
     status: Optional[DeviceStatus] = 'unknown' # required if active
 
     credentials: Optional[device_schema.CreateDeviceCredentials] = None

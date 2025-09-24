@@ -25,7 +25,6 @@ def device_create_schema_to_model(
     if schema.device_type == DeviceType.ACTIVE:
         model.credentials = schema.credentials
         model.ip_address = schema.ip_address
-        model.status = schema.status
     
     return model
 
