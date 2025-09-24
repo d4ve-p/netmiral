@@ -27,7 +27,6 @@ class ActiveNetworkDevice(NetworkDeviceBase):
     device_type: DeviceType = DeviceType.ACTIVE
 
     ip_address: str
-    status: DeviceStatus
     config_text: Optional[str] = None
 
 class CreateLocalNetworkDevice(NetworkDeviceBase):
