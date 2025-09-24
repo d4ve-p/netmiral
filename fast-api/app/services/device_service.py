@@ -50,6 +50,7 @@ async def create_local_device(network_device: device_schema.CreateLocalNetworkDe
         raise http_exceptions.DeviceAlreadyExistsException
 
     config_text = await config_file.read()
+    config_text = config_text.decode('utf-8')
 
     new_device = device_mapper.device_create_schema_to_model(network_device)
     new_device.config_text = config_text
