@@ -1,5 +1,5 @@
 import constants from "@/lib/constants"
-import { DeviceUploadLocal } from "@/types/dto/device"
+import { DeviceUploadActive, DeviceUploadLocal } from "@/types/dto/device"
 import { fetcher } from "./fetcher"
 
 export const DEVICE_UPLOAD_LOCAL_ENDPOINT = `${constants.API_PREFIX}/device/local`
@@ -13,4 +13,9 @@ export async function deviceUploadLocal(params: DeviceUploadLocal) {
     formData.append('file', params.file!)
 
     return fetcher.post<FormData, void>(DEVICE_UPLOAD_LOCAL_ENDPOINT, formData)
+}
+
+export const DEVICE_UPLOAD_ACTIVE_ENDPOINT = `${constants.API_PREFIX}/device/active`
+export async function deviceUploadActive(params: DeviceUploadActive) {
+    return fetcher.post<DeviceUploadActive, void>(DEVICE_UPLOAD_ACTIVE_ENDPOINT, params)
 }
