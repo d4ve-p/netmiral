@@ -2,8 +2,22 @@ export interface DeviceUploadLocal {
     hostname: string,
     location: string | undefined,
     model: string | undefined,
-    os_version: string | undefined
+    os_version: string | undefined,
     file: File | null
+}
+
+export interface DeviceCredential {
+    username: string,
+    password: string
+}
+
+export interface DeviceUploadActive {
+    hostname: string,
+    ip_address: string,
+    location: string | undefined,
+    model: string | undefined,
+    os_version: string | undefined,
+    credentials: DeviceCredential
 }
 
 
@@ -14,5 +28,19 @@ export function CreateDefault_DeviceUploadLocal(): DeviceUploadLocal {
         model: '',
         os_version: '',
         file: null
+    }
+}
+
+export function CreateDefault_DeviceUploadActive(): DeviceUploadActive {
+    return {
+        hostname: '',
+        ip_address: '',
+        location: '',
+        model: '',
+        os_version: '',
+        credentials: {
+            username: '',
+            password: ''
+        }
     }
 }
