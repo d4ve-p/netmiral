@@ -1,4 +1,4 @@
-from beanie import Document, Indexed
+from beanie import Document, Indexed, PydanticObjectId
 from pydantic import Field, IPvAnyAddress
 from typing import Optional
 
@@ -11,6 +11,8 @@ from ..schemas import device as device_schema
 from ..types.device import *
 
 class NetworkDevice(Document):
+    id: Optional[PydanticObjectId] = Field(default=None, alias='_id')
+
     hostname: Indexed(str, unique=True) 
     device_type: DeviceType
     location: Optional[str] # e.g., 'Data Center 1', 'Office 2'

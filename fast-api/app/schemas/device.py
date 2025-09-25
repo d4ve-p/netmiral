@@ -1,4 +1,5 @@
-from pydantic import BaseModel, Field, IPvAnyAddress
+from beanie import PydanticObjectId
+from pydantic import BaseModel, IPvAnyAddress, field_serializer
 from typing import Optional
 
 from datetime import datetime
@@ -36,10 +37,18 @@ class CreateActiveNetworkDevice(ActiveNetworkDevice):
     credentials: CreateDeviceCredentials
 
 class ShowNetworkDevice(NetworkDeviceBase):
-    id: str = Field(..., alias="_id")
+    id: PydanticObjectId
     created_at: datetime
     config_text: Optional[str]
     device_type: DeviceType
+
+    @field_serializer('id')
+    def serialize_id(self, id: PydanticObjectId, _info):
+        return str(id)
+    
+    class Config:
+        from_attributes = True
+
 
 class ShowActiveNetworkDevice(ShowNetworkDevice):
     ip_address: Optional[IPvAnyAddress]
