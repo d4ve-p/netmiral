@@ -11,6 +11,8 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { useModal } from '@/contexts/modal-context';
 import ModalType from '@/types/modal-type';
 import { triggerModal } from '@/lib/helper';
+import DeviceList from '@/components/dashboard/device-list';
+import { useState } from 'react';
 
 export default function DashboardLayout({
   children,
@@ -18,6 +20,12 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const { openModal } = useModal(); 
+
+  const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null)
+  
+  const handleSelectDevice = (deviceId: string) => {
+    setSelectedDeviceId(prevId => (prevId === deviceId ? null : deviceId))
+  }
 
   return (
     <Box
@@ -94,9 +102,10 @@ export default function DashboardLayout({
               Active Device
             </Button>
           </Box>
-          <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
-            <Typography sx={{ color: '#5D6D86', mt: 2 }}>Device list...</Typography>
-          </Box>
+          <DeviceList
+            selectedDeviceId={selectedDeviceId}
+            onSelectDevice={handleSelectDevice}
+          />
         </Sheet>
 
         <Box component="main" sx={{ p: 2, overflow: 'auto' }}>
