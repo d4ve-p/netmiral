@@ -1,3 +1,4 @@
+import { ActiveDevice, Device } from "@/types/device";
 import ModalType from "@/types/modal-type";
 
 export function triggerModal(
@@ -5,4 +6,8 @@ export function triggerModal(
   modalType: ModalType
 ) {
   return () => callback(modalType);
+}
+
+export function isActiveDevice(device: Device): device is ActiveDevice {
+  return 'ip_address' in device;
 }
