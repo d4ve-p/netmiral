@@ -2,6 +2,7 @@ import re
 from typing import List
 
 from beanie.operators import Eq
+from beanie import SortDirection
 from fastapi import UploadFile
 
 from ..exceptions import http_exceptions
@@ -22,7 +23,10 @@ async def get_device(id: str) -> device_schema.ShowActiveNetworkDevice:
     return device_mapper.device_model_to_show_schema(device)
 
 async def get_all_devices() -> List[device_schema.ShowNetworkDevice]:
-    devices = await NetworkDevice.all().to_list()
+    devices = await NetworkDevice.all().sort([ 
+        ("device_type", SortDirection.ASCENDING),
+        ("hostname", SortDirection.ASCENDING) 
+        ]).to_list()
     
     return [
         device_mapper.device_model_to_show_schema(device) 
