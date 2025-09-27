@@ -1,5 +1,6 @@
 "use client";
 
+import ModalManager from '@/components/modals/modal-manager';
 import ModalType from '@/types/modal-type';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
@@ -37,7 +38,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     return (
         <ModalContext.Provider value={{ isOpen, modalType, modalProps, openModal, closeModal }}>
         {children}
-        {/* TODO: Add ModalManager */}
+            <ModalManager />
         </ModalContext.Provider>
     );
 };

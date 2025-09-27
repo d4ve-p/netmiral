@@ -1,4 +1,3 @@
-import ModalManager from "@/components/modals/modal-manager"
 import { ModalProvider } from "@/contexts/modal-context"
 import { CssVarsProvider } from "@mui/joy"
 
@@ -13,7 +12,6 @@ export default function RootLayout({
         <CssVarsProvider defaultMode="dark">
           <ModalProvider>
             { children }
-            <ModalManager />
           </ModalProvider>
         </CssVarsProvider>
       </body>
