@@ -10,3 +10,8 @@ export interface DeviceListProps {
   selectedDeviceId: string | null;
   onSelectDevice: (deviceId: string) => void;
 }
+
+export interface DeviceContextsProps {
+  device: Device|null,
+  setDevice: (device: Device) => void
+}

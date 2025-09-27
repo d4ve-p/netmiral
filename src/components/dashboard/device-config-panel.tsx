@@ -9,11 +9,14 @@ import { ArrowLeft, TerminalSquare, Network, ShieldCheck } from 'lucide-react';
 import ConfigType from '@/types/config-type';
 import OptionCard from './option-card';
 import { ConfigRenderMap } from '@/lib/ui-helper/ui-map';
+import { Device } from '@/types/device';
+import { useDevice } from '@/contexts/device-context';
 
-export default function DeviceConfigPanel({ selectedDevice }: { selectedDevice: IDevice }) {
+export default function DeviceConfigPanel() {
+  const device_context = useDevice()
   const [activeConfig, setActiveConfig] = useState<ConfigType | null>(null);
 
-  if (!selectedDevice) {
+  if (!device_context.device) {
     return (
       <Card variant="outlined" sx={{ bgcolor: '#0A111C', borderColor: '#273B53' }}>
         <Typography level="h2" sx={{ color: '#E0E6F1' }}>
@@ -51,7 +54,7 @@ export default function DeviceConfigPanel({ selectedDevice }: { selectedDevice: 
   return (
     <Box>
       <Typography level="h2" sx={{ color: '#E0E6F1', mb: 2 }}>
-        Configuration for <Typography color="primary">{selectedDevice.name}</Typography>
+        Configuration for <Typography color="primary">{device_context.device.hostname}</Typography>
       </Typography>
       <Box
         sx={{

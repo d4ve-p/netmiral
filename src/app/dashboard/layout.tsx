@@ -13,6 +13,7 @@ import ModalType from '@/types/modal-type';
 import { triggerModal } from '@/lib/helper';
 import DeviceList from '@/components/dashboard/device-list';
 import { useState } from 'react';
+import { DeviceProvider } from '@/contexts/device-context';
 
 export default function DashboardLayout({
   children,
@@ -21,13 +22,8 @@ export default function DashboardLayout({
 }) {
   const { openModal } = useModal(); 
 
-  const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null)
-  
-  const handleSelectDevice = (deviceId: string) => {
-    setSelectedDeviceId(prevId => (prevId === deviceId ? null : deviceId))
-  }
-
   return (
+    <DeviceProvider>
     <Box
       sx={{
         display: 'grid',
@@ -102,10 +98,7 @@ export default function DashboardLayout({
               Active Device
             </Button>
           </Box>
-          <DeviceList
-            selectedDeviceId={selectedDeviceId}
-            onSelectDevice={handleSelectDevice}
-          />
+          <DeviceList />
         </Sheet>
 
         <Box component="main" sx={{ p: 2, overflow: 'auto' }}>
@@ -113,5 +106,6 @@ export default function DashboardLayout({
         </Box>
       </Box>
     </Box>
+    </DeviceProvider>
   );
 }

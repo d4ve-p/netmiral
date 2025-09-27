@@ -13,8 +13,10 @@ import DeviceListItem from './device-list-item';
 import { DeviceListProps } from '@/types/props/device';
 import { Device, DeviceType } from '@/types/device';
 import { DEVICE_GET_ALL_DEVICE_ENDPOINT, getAllDevice } from '@/lib/api/device';
+import { useDevice } from '@/contexts/device-context';
 
-export default function DeviceList({ selectedDeviceId, onSelectDevice }: DeviceListProps) {
+export default function DeviceList() {
+    const device_context = useDevice()
     const { data: devices, error, isLoading } = useSWR<Device[]>(DEVICE_GET_ALL_DEVICE_ENDPOINT, getAllDevice);
 
     const { activeDevices, localDevices } = useMemo(() => {
@@ -50,8 +52,8 @@ export default function DeviceList({ selectedDeviceId, onSelectDevice }: DeviceL
             <DeviceListItem
                 key={device.id}
                 device={device}
-                isSelected={selectedDeviceId === device.id}
-                onClick={() => onSelectDevice(device.id)}
+                isSelected={device_context.device?.id === device.id}
+                onClick={() => device_context.setDevice(device)}
             />
             ))
         ) : (
@@ -73,8 +75,8 @@ export default function DeviceList({ selectedDeviceId, onSelectDevice }: DeviceL
             <DeviceListItem
                 key={device.id}
                 device={device}
-                isSelected={selectedDeviceId === device.id}
-                onClick={() => onSelectDevice(device.id)}
+                isSelected={device_context.device?.id === device.id}
+                onClick={() => device_context.setDevice(device)}
             />
             ))
         ) : (
