@@ -18,7 +18,7 @@ export async function deviceUploadLocal(params: DeviceUploadLocal) {
 
 export const DEVICE_PUT_LOCAL_ENDPOINT = `${constants.API_PREFIX}/device/local`
 export async function devicePutLocal(params: DevicePutActive) {
-    return fetcher.post<DevicePutActive, void>(DEVICE_PUT_LOCAL_ENDPOINT, params)
+    return fetcher.put<DevicePutActive, void>(DEVICE_PUT_LOCAL_ENDPOINT, params)
 }
 
 export const DEVICE_UPLOAD_ACTIVE_ENDPOINT = `${constants.API_PREFIX}/device/active`

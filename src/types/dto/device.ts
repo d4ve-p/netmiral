@@ -32,7 +32,7 @@ export function CreateDefault_DeviceUploadLocal(): DeviceUploadLocal {
         location: '',
         model: '',
         os_version: '',
-        file: null
+        file: undefined
     }
 }
 

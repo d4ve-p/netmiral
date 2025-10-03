@@ -28,6 +28,10 @@ export default function FreeConfigPanel() {
   }
 
   const triggerPut = async () => {
+    device.setDevice({
+      ...device.device!,
+      config_text: config
+    })
     await trigger({
       id: device.device!.id,
       hostname: device.device!.hostname!,
