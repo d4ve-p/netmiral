@@ -8,7 +8,7 @@ export const DeviceProvider = ({children} : {children: ReactNode}) => {
     const [device, setDevice] = useState<Device|null>(null)
 
     return (
-        <DeviceContext.Provider value={{device: device, setDevice: setDevice}}>
+        <DeviceContext.Provider value={{device: device!, setDevice: setDevice}}>
             { children }
         </DeviceContext.Provider>
     )

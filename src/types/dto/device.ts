@@ -3,7 +3,7 @@ export interface DeviceUploadLocal {
     location: string | undefined,
     model: string | undefined,
     os_version: string | undefined,
-    file: File | null
+    file: File | undefined
 }
 
 export interface DeviceCredential {
@@ -18,6 +18,11 @@ export interface DeviceUploadActive {
     model: string | undefined,
     os_version: string | undefined,
     credentials: DeviceCredential
+}
+
+export type DevicePutActive = Omit<DeviceUploadLocal, 'file'> & {
+    id: string,
+    config_text: string
 }
 
 

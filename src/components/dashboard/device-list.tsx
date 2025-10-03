@@ -10,7 +10,6 @@ import CircularProgress from '@mui/joy/CircularProgress';
 import Typography from '@mui/joy/Typography';
 
 import DeviceListItem from './device-list-item';
-import { DeviceListProps } from '@/types/props/device';
 import { Device, DeviceType } from '@/types/device';
 import { DEVICE_GET_ALL_DEVICE_ENDPOINT, getAllDevice } from '@/lib/api/device';
 import { useDevice } from '@/contexts/device-context';
