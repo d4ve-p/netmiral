@@ -9,24 +9,34 @@ import Card from '@mui/joy/Card';
 import Typography from '@mui/joy/Typography';
 import { TerminalSquare, Save, Undo2 } from 'lucide-react'; 
 import { CodeEditor } from '../ui/code-editor';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDevice } from '@/contexts/device-context';
+import useSWRMutation from 'swr/mutation';
+import { createMutationFetcher } from '@/lib/api/fetcher';
+import { DEVICE_PUT_LOCAL_ENDPOINT, devicePutLocal } from '@/lib/api/device';
+
+const putLocalDeviceMutation = createMutationFetcher(devicePutLocal)
 
 export default function FreeConfigPanel() {
-  const mockConfig = `!
-! Last configuration change at 10:00:00 UTC Wed Sep 17 2025
-!
-version 15.2
-hostname core-router-01
-!
-boot-start-marker
-boot-end-marker
-!
-...
-interface GigabitEthernet0/0
- ip address 192.168.1.1 255.255.255.0
- negotiation auto
-!`;
-  const [config, setConfig] = useState(mockConfig);
+  const device = useDevice()
+  const [config, setConfig] = useState(device.device?.config_text || '');
+
+  const { isMutating, trigger } = useSWRMutation(DEVICE_PUT_LOCAL_ENDPOINT, putLocalDeviceMutation)
+
+  const performReset = () => {
+    setConfig(device.device?.config_text || '');
+  }
+
+  const triggerPut = async () => {
+    await trigger({
+      id: device.device!.id,
+      hostname: device.device!.hostname!,
+      location: device.device!.location ?? undefined,
+      model: device.device!.model ?? undefined,
+      os_version: device.device!.os_version ?? undefined,
+      config_text: config
+    })
+  }
 
   return (
     <Card variant="outlined" sx={{ bgcolor: '#0A111C', borderColor: '#273B53', height: '100%' }}>
@@ -38,10 +48,10 @@ interface GigabitEthernet0/0
           </Typography>
         </Box>
         <Box sx={{ display: 'flex', gap: 1 }}>
-          <Button size="sm" variant="outlined" color="neutral" startDecorator={<Undo2 size={16} />}>
+          <Button size="sm" variant="outlined" color="neutral" startDecorator={<Undo2 size={16} />} onClick={performReset}>
             Revert
           </Button>
-          <Button size="sm" color="success" startDecorator={<Save size={16} />}>
+          <Button size="sm" color="success" startDecorator={<Save size={16}/>} loading={isMutating} onClick={triggerPut}>
             Apply Changes
           </Button>
         </Box>
@@ -49,7 +59,7 @@ interface GigabitEthernet0/0
       
       {/* TODO: This Textarea should be replaced with a proper code editor component
           like React CodeMirror or Monaco Editor for syntax highlighting. */}
-      <CodeEditor value={mockConfig} onChange={setConfig} />
+      <CodeEditor value={config} onChange={setConfig} />
     </Card>
   );
 }
