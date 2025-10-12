@@ -8,6 +8,7 @@ import datetime
 
 from . import DOCUMENT_MODELS
 from ..schemas import device as device_schema
+from .config import StructuredConfig
 from ..types.device import *
 
 class NetworkDevice(Document):
@@ -23,6 +24,7 @@ class NetworkDevice(Document):
     credentials: Optional[device_schema.CreateDeviceCredentials] = None
 
     config_text: Optional[str]
+    config: StructuredConfig # The config in structured form
     
     # --- Optional Metadata Fields ---
     model: Optional[str] = None     
