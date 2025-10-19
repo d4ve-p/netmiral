@@ -1,3 +1,6 @@
+import { ModalProvider } from "@/contexts/modal-context"
+import { CssVarsProvider } from "@mui/joy"
+
 export default function RootLayout({
   children,
 }: {
@@ -6,7 +9,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body style = {{ minHeight: '100vh', width: '100vw', padding: 0, margin: 0}}>
-        { children}
+        <CssVarsProvider defaultMode="dark">
+          <ModalProvider>
+            { children }
+          </ModalProvider>
+        </CssVarsProvider>
       </body>
     </html>
   )

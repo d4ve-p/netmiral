@@ -17,7 +17,10 @@
       ],
       "@/api/*": [
         "lib/api/*"
-      ]
+      ],
+      "@/contexts/*": [
+        "contexts/*"
+      ],
     },
     "lib": [
       "dom",

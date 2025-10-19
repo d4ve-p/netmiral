@@ -5,10 +5,10 @@ from fastapi import HTTPException, status
 from .. import constants
 from ..models.Admin import Admin
 from ..models.Token import Token
-from ..schemas import CreateAdmin, ValidateAdmin
+from ..schemas import admin as admin_schema
 from . import security_service
 
-async def create_admin(admin_data: CreateAdmin):
+async def create_admin(admin_data: admin_schema.CreateAdmin):
     existing_admin = await Admin.find_one()
     
     if existing_admin:
@@ -27,7 +27,7 @@ async def create_admin(admin_data: CreateAdmin):
     
     return {"message": "Admin created successfully"}
 
-async def validate_admin(admin_data: ValidateAdmin):
+async def validate_admin(admin_data: admin_schema.ValidateAdmin):
     admin = await Admin.find_one()
     
     if not admin or not security_service.verify_password(admin_data.password, admin.hashed_password):
