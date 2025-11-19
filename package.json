@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev:frontend": "next dev --turbopack",
-    "dev:backend": "cd fast-api && .venv\\Scripts\\activate && uvicorn app.main:app --reload --host 0.0.0.0",
+    "dev:backend": "node scripts/dev-backend.js",
     "dev": "concurrently \"npm:dev:frontend\" \"npm:dev:backend\"",
+    "bun-dev": "concurrently \"bun:dev:frontend\" \"bun:dev:backend\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
