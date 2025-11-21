@@ -45,7 +45,7 @@ export default function DeviceConfigPanel() {
         </Button>
 
         {/* TODO: Render the correct detailed config card based on the active state */}
-        { activeConfig ? <ComponentToRender /> : null }
+        { activeConfig ? <ComponentToRender key={device_context.device.id} /> : null }
       </Box>
     );
   }
