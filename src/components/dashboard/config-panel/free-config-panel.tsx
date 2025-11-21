@@ -7,8 +7,8 @@ import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import Card from '@mui/joy/Card';
 import Typography from '@mui/joy/Typography';
-import { TerminalSquare, Save, Undo2 } from 'lucide-react'; 
-import { CodeEditor } from '../ui/code-editor';
+import { TerminalSquare, Save, Undo2 } from 'lucide-react';
+import { CodeEditor } from '../../ui/code-editor';
 import { useEffect, useState } from 'react';
 import { useDevice } from '@/contexts/device-context';
 import useSWRMutation from 'swr/mutation';
@@ -55,12 +55,12 @@ export default function FreeConfigPanel() {
           <Button size="sm" variant="outlined" color="neutral" startDecorator={<Undo2 size={16} />} onClick={performReset}>
             Revert
           </Button>
-          <Button size="sm" color="success" startDecorator={<Save size={16}/>} loading={isMutating} onClick={triggerPut}>
+          <Button size="sm" color="success" startDecorator={<Save size={16} />} loading={isMutating} onClick={triggerPut}>
             Apply Changes
           </Button>
         </Box>
       </Box>
-      
+
       {/* TODO: This Textarea should be replaced with a proper code editor component
           like React CodeMirror or Monaco Editor for syntax highlighting. */}
       <CodeEditor value={config} onChange={setConfig} />

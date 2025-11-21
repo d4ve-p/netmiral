@@ -7,7 +7,7 @@ import Card from '@mui/joy/Card';
 import Typography from '@mui/joy/Typography';
 import { ArrowLeft, TerminalSquare, Network, ShieldCheck, LucideWaypoints, DatabaseZap } from 'lucide-react';
 import ConfigType from '@/types/config-type';
-import OptionCard from './option-card';
+import OptionCard from '../option-card';
 import { ConfigRenderMap } from '@/lib/ui-helper/ui-map';
 import { useDevice } from '@/contexts/device-context';
 
@@ -44,7 +44,7 @@ export default function DeviceConfigPanel() {
         </Button>
 
         {/* TODO: Render the correct detailed config card based on the active state */}
-        { activeConfig ? <ComponentToRender key={device_context.device.id} /> : null }
+        {activeConfig ? <ComponentToRender key={device_context.device.id} /> : null}
       </Box>
     );
   }
@@ -91,7 +91,7 @@ export default function DeviceConfigPanel() {
           description="Create and manage VLANs on your device."
           icon={DatabaseZap}
           onClick={() => setActiveConfig(ConfigType.Vlan)}
-        />  
+        />
       </Box>
     </Box>
   );

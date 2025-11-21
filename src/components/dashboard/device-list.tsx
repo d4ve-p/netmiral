@@ -9,7 +9,7 @@ import ListItem from '@mui/joy/ListItem';
 import CircularProgress from '@mui/joy/CircularProgress';
 import Typography from '@mui/joy/Typography';
 
-import DeviceListItem from './device-list-item';
+import DeviceListItem from './items/device-list-item';
 import { Device, DeviceType } from '@/types/device';
 import { DEVICE_GET_ALL_DEVICE_ENDPOINT, getAllDevice } from '@/lib/api/device';
 import { useDevice } from '@/contexts/device-context';
@@ -20,10 +20,10 @@ export default function DeviceList() {
 
     const { activeDevices, localDevices } = useMemo(() => {
         if (!devices) return { activeDevices: [], localDevices: [] };
-        
+
         const active = devices.filter(d => d.device_type === DeviceType.ACTIVE);
         const local = devices.filter(d => d.device_type === DeviceType.LOCAL);
-        
+
         return { activeDevices: active, localDevices: local };
     }, [devices]);
 
@@ -36,57 +36,57 @@ export default function DeviceList() {
     }
 
     return (
-    <List
-    sx={{
-        // Allow the list to scroll if it's too long
-        overflow: 'auto',
-    }}
-    >
-    {/* Active Devices Section */}
-    <ListItem nested>
-        <ListSubheader sx={{ bgcolor: 'transparent', color:'Highlight', fontWeight: 'bolder' }}>Active Devices</ListSubheader>
-        <List>
-        {activeDevices.length > 0 ? (
-            activeDevices.map((device) => (
-            <DeviceListItem
-                key={device.id}
-                device={device}
-                isSelected={device_context.device?.id === device.id}
-                onClick={() => device_context.setDevice(device)}
-            />
-            ))
-        ) : (
-            <ListItem>
-            <Typography level="body-sm" sx={{ pl: 2, color: 'neutral.500' }}>
-                No active devices found.
-            </Typography>
+        <List
+            sx={{
+                // Allow the list to scroll if it's too long
+                overflow: 'auto',
+            }}
+        >
+            {/* Active Devices Section */}
+            <ListItem nested>
+                <ListSubheader sx={{ bgcolor: 'transparent', color: 'Highlight', fontWeight: 'bolder' }}>Active Devices</ListSubheader>
+                <List>
+                    {activeDevices.length > 0 ? (
+                        activeDevices.map((device) => (
+                            <DeviceListItem
+                                key={device.id}
+                                device={device}
+                                isSelected={device_context.device?.id === device.id}
+                                onClick={() => device_context.setDevice(device)}
+                            />
+                        ))
+                    ) : (
+                        <ListItem>
+                            <Typography level="body-sm" sx={{ pl: 2, color: 'neutral.500' }}>
+                                No active devices found.
+                            </Typography>
+                        </ListItem>
+                    )}
+                </List>
             </ListItem>
-        )}
-        </List>
-    </ListItem>
 
-    {/* Local Devices Section */}
-    <ListItem nested sx={{ mt: 2 }}>
-        <ListSubheader sx={{ bgcolor: 'transparent', color:'Highlight', fontWeight: 'bolder' }}>Local Devices</ListSubheader>
-        <List>
-        {localDevices.length > 0 ? (
-            localDevices.map((device) => (
-            <DeviceListItem
-                key={device.id}
-                device={device}
-                isSelected={device_context.device?.id === device.id}
-                onClick={() => device_context.setDevice(device)}
-            />
-            ))
-        ) : (
-            <ListItem>
-            <Typography level="body-sm" sx={{ pl: 2, color: 'neutral.500' }}>
-                No local devices found.
-            </Typography>
+            {/* Local Devices Section */}
+            <ListItem nested sx={{ mt: 2 }}>
+                <ListSubheader sx={{ bgcolor: 'transparent', color: 'Highlight', fontWeight: 'bolder' }}>Local Devices</ListSubheader>
+                <List>
+                    {localDevices.length > 0 ? (
+                        localDevices.map((device) => (
+                            <DeviceListItem
+                                key={device.id}
+                                device={device}
+                                isSelected={device_context.device?.id === device.id}
+                                onClick={() => device_context.setDevice(device)}
+                            />
+                        ))
+                    ) : (
+                        <ListItem>
+                            <Typography level="body-sm" sx={{ pl: 2, color: 'neutral.500' }}>
+                                No local devices found.
+                            </Typography>
+                        </ListItem>
+                    )}
+                </List>
             </ListItem>
-        )}
         </List>
-    </ListItem>
-    </List>
-  );
+    );
 }

@@ -1,5 +1,5 @@
 import Card from '@mui/joy/Card';
-import DeviceConfigPanel from '@/components/dashboard/device-config-panel';
+import DeviceConfigPanel from '@/components/dashboard/config-panel/device-config-panel';
 
 export default function Page() {
     return (
