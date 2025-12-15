@@ -19,7 +19,7 @@ import Option from '@mui/joy/Option';
 import FormHelperText from '@mui/joy/FormHelperText';
 
 interface UpsertVlanForm {
-  id: number | string; // Allow string for input handling
+  id: number | string; 
   name: string;
   state: 'active' | 'suspend';
 }
@@ -28,6 +28,9 @@ export default function VlanModal() {
   const { isOpen, closeModal, modalProps } = useModal();
   const isEditMode = !!modalProps.vlan;
   const existingVlan = modalProps.vlan as Vlan;
+
+  // 1. Get the callback from props
+  const onConfirm = modalProps.onConfirm as (vlan: Vlan) => void;
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm<UpsertVlanForm>({
     defaultValues: {
@@ -50,8 +53,21 @@ export default function VlanModal() {
   }, [isOpen, isEditMode, existingVlan, reset]);
 
   const onSubmit = (data: UpsertVlanForm) => {
-    console.log("Submitting VLAN:", data);
-    // TODO: Trigger API call
+    // 2. Construct the Payload
+    // Ensure ID is cast to a number, as forms often treat inputs as strings
+    const payload: Vlan = {
+        id: Number(data.id),
+        name: data.name,
+        state: data.state
+    };
+
+    console.log("Submitting VLAN:", payload);
+
+    // 3. Trigger the Parent's Callback
+    if (onConfirm) {
+        onConfirm(payload);
+    }
+
     closeModal();
   };
 
@@ -85,7 +101,7 @@ export default function VlanModal() {
                     {...field} 
                     autoFocus 
                     placeholder="e.g., 10" 
-                    disabled={isEditMode} // Usually better not to change ID on edit
+                    disabled={isEditMode} 
                   />
                   {errors.id && <FormHelperText>{errors.id.message}</FormHelperText>}
                 </FormControl>

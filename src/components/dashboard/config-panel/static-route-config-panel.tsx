@@ -1,148 +1,185 @@
+// src/components/dashboard/static-route-config-panel.tsx
 "use client";
+
+import { useState } from 'react';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
-import Table from '@mui/joy/Table';
-import Sheet from '@mui/joy/Sheet';
+import Card from '@mui/joy/Card';
 import Typography from '@mui/joy/Typography';
+import List from '@mui/joy/List';
+import ListItem from '@mui/joy/ListItem';
 import IconButton from '@mui/joy/IconButton';
-import Chip from '@mui/joy/Chip';
 import Tooltip from '@mui/joy/Tooltip';
-
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AltRouteIcon from '@mui/icons-material/AltRoute';
+import Divider from '@mui/joy/Divider';
+import Chip from '@mui/joy/Chip';
+import { Route as RouteIcon, Plus, Pencil, Trash2, ArrowRight } from 'lucide-react';
+import ModalType from '@/types/modal-type';
 
 import { useModal } from '@/contexts/modal-context';
-import { StaticRoute } from '@/types/static-route';
-import ModalType from '@/types/modal-type';
-import { useDevice } from '@/contexts/device-context';
+// Assuming you added UpsertRoute to your enum, or use the string key 'UPSERT_ROUTE'
+// import ModalType from '@/types/modal-type'; 
 
+// 1. Define Route Data Shape
+export interface RouteData {
+  prefix: string;   // e.g. "192.168.10.0"
+  mask: string;     // e.g. "255.255.255.0"
+  next_hop: string; // e.g. "10.1.1.1" or "GigabitEthernet0/1"
+  distance?: number; // AD, default 1
+  name?: string;
+}
 
-export default function StaticRoutesConfigPanel() {
-  const device_context = useDevice();
-  const routes: StaticRoute[] = []; // TODO: proper routes implementation here
+// 2. Dummy Data
+const initialRoutes: RouteData[] = [
+  { 
+    prefix: '0.0.0.0', 
+    mask: '0.0.0.0', 
+    next_hop: '203.0.113.1', 
+    distance: 1, 
+    name: 'DEFAULT_GATEWAY' 
+  },
+  { 
+    prefix: '10.20.0.0', 
+    mask: '255.255.0.0', 
+    next_hop: '10.1.1.254', 
+    distance: 1, 
+    name: 'HEAD_OFFICE_LAN' 
+  },
+  { 
+    prefix: '192.168.100.0', 
+    mask: '255.255.255.0', 
+    next_hop: 'GigabitEthernet0/1', 
+    distance: 5, 
+    name: 'BACKUP_LINK' 
+  },
+];
 
-
+export default function StaticRouteConfigPanel() {
+  const [routes, setRoutes] = useState<RouteData[]>(initialRoutes);
   const { openModal } = useModal();
 
   const handleAdd = () => {
-    openModal(ModalType.AddEditStaticRotue, { deviceId: device_context.device?.id });
+    // We use the string key 'UPSERT_ROUTE' based on our previous step
+    // If you have an Enum, replace this with ModalType.UpsertRoute
+    openModal(ModalType.UpsertRoute, {
+      onConfirm: (newRoute: RouteData) => setRoutes((prev) => [...prev, newRoute])
+    });
   };
 
-  const handleEdit = (route: StaticRoute) => {
-    openModal(ModalType.AddEditStaticRotue, { deviceId: device_context.device?.id, route });
+  const handleEdit = (route: RouteData) => {
+    openModal(ModalType.UpsertRoute, {
+      route: route, // Pass existing data
+      onConfirm: (updatedRoute: RouteData) => {
+        // Unique key for routes is usually prefix + mask + nexthop, 
+        // but for this simple frontend demo, we'll match by prefix.
+        setRoutes((prev) => prev.map((item) => item.prefix === route.prefix ? updatedRoute : item));
+      }
+    });
   };
 
-  const handleDelete = (routeId: string) => {
-    if (confirm('Are you sure you want to delete this route?')) {
-      // TODO: Call your delete API mutation here
-      console.log('Deleting route:', routeId);
+  const handleDelete = (prefix: string) => {
+    if (confirm(`Delete route to ${prefix}?`)) {
+      setRoutes((prev) => prev.filter((item) => item.prefix !== prefix));
     }
   };
 
-  if (routes.length === 0) {
-    return (
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', py: 8, gap: 2 }}>
-        <AltRouteIcon sx={{ fontSize: 48, color: 'neutral.700' }} />
-        <Typography level="h4" textColor="neutral.400">No Static Routes Configured</Typography>
-        <Button startDecorator={<AddIcon />} onClick={handleAdd} sx={{ bgcolor: '#22d3ee' }}>
-          Add First Route
-        </Button>
-      </Box>
-    );
-  }
-
   return (
-    <Box>
+    <Card variant="outlined" sx={{ bgcolor: '#0A111C', borderColor: '#273B53' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-        <Typography level="h3" textColor="#E0E6F1">Static Routes</Typography>
-        <Button startDecorator={<AddIcon />} onClick={handleAdd} sx={{ bgcolor: '#22d3ee' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <RouteIcon size={24} color="#A1ACC2" />
+          <Typography level="h3" sx={{ color: '#E0E6F1' }}>
+            Static Routes
+          </Typography>
+        </Box>
+        <Button 
+          size="sm" 
+          color="success" 
+          startDecorator={<Plus size={16} />}
+          onClick={handleAdd}
+        >
           Add Route
         </Button>
       </Box>
 
-      <Sheet
-        variant="outlined"
-        sx={{
-          borderRadius: 'sm',
-          bgcolor: '#0A111C',
-          borderColor: '#273B53',
-          overflow: 'auto',
-        }}
-      >
-        <Table
-          hoverRow
-          sx={{
-            '--TableCell-headBackground': 'transparent',
-            '--TableCell-selectedBackground': 'rgba(34, 211, 238, 0.08)',
-            '& thead th': { color: '#A1ACC2', borderBottom: '1px solid #273B53' },
-            '& tbody td': { color: '#E0E6F1', borderBottom: '1px solid #273B53' },
-            '& tbody tr:last-child td': { borderBottom: 'none' },
-          }}
-        >
-          <thead>
-            <tr>
-              <th style={{ width: '25%' }}>Destination Network</th>
-              <th style={{ width: '20%' }}>Subnet Mask</th>
-              <th style={{ width: '20%' }}>Next Hop / Interface</th>
-              <th style={{ width: '10%' }}>Distance</th>
-              <th style={{ width: '15%' }}>Name</th>
-              <th style={{ width: '10%', textAlign: 'right' }}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {routes.map((route) => (
-              <tr key={route.id}>
-                <td>
-                  <Typography fontFamily="code" fontSize="sm">{route.prefix}</Typography>
-                </td>
-                <td>
-                  <Typography fontFamily="code" fontSize="sm" textColor="neutral.400">
-                    {route.mask}
+      <List sx={{ gap: 1 }}>
+        {routes.map((route, index) => (
+          <ListItem
+            key={`${route.prefix}-${index}`}
+            sx={{
+              bgcolor: '#020508',
+              borderRadius: 'sm',
+              p: 2,
+              border: '1px solid',
+              borderColor: '#273B53',
+              display: 'flex',
+              alignItems: 'center',
+              transition: 'all 0.2s',
+              '&:hover': {
+                borderColor: '#22d3ee',
+                transform: 'translateX(4px)'
+              }
+            }}
+          >
+            {/* 1. AD Indicator (Replaces Status Dot) */}
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mr: 2, minWidth: '40px' }}>
+                <Chip 
+                    size="sm" 
+                    variant="soft" 
+                    color="neutral"
+                    sx={{ fontWeight: 'bold', fontSize: 'xs', minWidth: '30px' }}
+                >
+                    AD {route.distance || 1}
+                </Chip>
+            </Box>
+
+            {/* Divider */}
+            <Divider orientation="vertical" sx={{ height: '30px', mr: 2, bgcolor: '#273B53' }} />
+
+            {/* 2. Main Info */}
+            <Box sx={{ flexGrow: 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1.5 }}>
+                {/* Destination Network (Monospace) */}
+                <Typography 
+                    fontFamily="code" 
+                    level="title-md" 
+                    sx={{ color: '#22d3ee', fontWeight: 600 }}
+                >
+                  {route.prefix} 
+                  <Typography textColor="neutral.500" fontSize="sm"> / {route.mask}</Typography>
+                </Typography>
+              </Box>
+
+              {/* Next Hop & Name */}
+              <Box sx={{ mt: 0.5, display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Typography level="body-sm" textColor="neutral.400" startDecorator={<ArrowRight size={14} />}>
+                     via {route.next_hop}
                   </Typography>
-                </td>
-                <td>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <AltRouteIcon sx={{ fontSize: 16, color: '#22d3ee' }} />
-                    <Typography fontFamily="code" fontSize="sm">{route.next_hop}</Typography>
-                  </Box>
-                </td>
-                <td>
-                  {route.distance ? (
-                    <Chip size="sm" variant="outlined" color="neutral">
-                      {route.distance}
+                  
+                  {route.name && (
+                    <Chip size="sm" variant="outlined" color="primary" sx={{ ml: 1, fontSize: 'xs', height: '20px' }}>
+                        {route.name}
                     </Chip>
-                  ) : (
-                    <Typography level="body-xs" textColor="neutral.600">Def (1)</Typography>
                   )}
-                </td>
-                <td>
-                  {route.name ? (
-                    <Typography level="body-sm">{route.name}</Typography>
-                  ) : (
-                    <Typography level="body-xs" fontStyle="italic" textColor="neutral.600">-</Typography>
-                  )}
-                </td>
-                <td>
-                  <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
-                    <Tooltip title="Edit Route" variant="soft">
-                      <IconButton size="sm" variant="plain" color="neutral" onClick={() => handleEdit(route)}>
-                        <EditIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete Route" variant="soft" color="danger">
-                      <IconButton size="sm" variant="plain" color="danger" onClick={() => handleDelete(route.id)}>
-                        <DeleteIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </Box>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </Sheet>
-    </Box>
+              </Box>
+            </Box>
+
+            {/* 3. Actions */}
+            <Box sx={{ display: 'flex', gap: 0.5 }}>
+              <Tooltip title="Edit" variant="soft">
+                <IconButton size="sm" variant="plain" color="neutral" onClick={() => handleEdit(route)}>
+                  <Pencil size={16} />
+                </IconButton>
+              </Tooltip>
+              
+              <Tooltip title="Delete" variant="soft" color="danger">
+                <IconButton size="sm" variant="plain" color="danger" onClick={() => handleDelete(route.prefix)}>
+                  <Trash2 size={16} />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          </ListItem>
+        ))}
+      </List>
+    </Card>
   );
 }

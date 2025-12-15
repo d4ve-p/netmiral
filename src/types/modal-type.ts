@@ -3,6 +3,10 @@ enum ModalType {
     ActiveDevice = 'ActiveDevice',
     AddEditStaticRotue = 'AddEditStaticRotue',
     AddEditVlan = 'AddEditVlan',
+    AddAcl = 'AddAcl',
+    AddAclRule = 'AddAclRule',
+    UpsertInterface = 'UpsertInterface',
+    UpsertRoute = 'UpsertRoute'
 }
 
 export default ModalType
