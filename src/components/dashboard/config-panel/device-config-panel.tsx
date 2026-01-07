@@ -5,11 +5,10 @@ import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import Card from '@mui/joy/Card';
 import Typography from '@mui/joy/Typography';
-import { ArrowLeft, TerminalSquare, Network, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, TerminalSquare, Network, ShieldCheck, LucideWaypoints, DatabaseZap } from 'lucide-react';
 import ConfigType from '@/types/config-type';
-import OptionCard from './option-card';
+import OptionCard from '../option-card';
 import { ConfigRenderMap } from '@/lib/ui-helper/ui-map';
-import { Device } from '@/types/device';
 import { useDevice } from '@/contexts/device-context';
 
 export default function DeviceConfigPanel() {
@@ -45,7 +44,7 @@ export default function DeviceConfigPanel() {
         </Button>
 
         {/* TODO: Render the correct detailed config card based on the active state */}
-        { activeConfig ? <ComponentToRender /> : null }
+        {activeConfig ? <ComponentToRender key={device_context.device.id} /> : null}
       </Box>
     );
   }
@@ -80,6 +79,18 @@ export default function DeviceConfigPanel() {
           description="Create and manage Access Control Lists (ACLs) and rules."
           icon={ShieldCheck}
           onClick={() => setActiveConfig(ConfigType.AccessLists)}
+        />
+        <OptionCard
+          title="Static Routes"
+          description="View and configure static routing entries."
+          icon={LucideWaypoints}
+          onClick={() => setActiveConfig(ConfigType.StaticRoutes)}
+        />
+        <OptionCard
+          title="VLAN Database"
+          description="Create and manage VLANs on your device."
+          icon={DatabaseZap}
+          onClick={() => setActiveConfig(ConfigType.Vlan)}
         />
       </Box>
     </Box>

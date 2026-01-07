@@ -24,7 +24,7 @@ class NetworkDevice(Document):
     credentials: Optional[device_schema.CreateDeviceCredentials] = None
 
     config_text: Optional[str]
-    config: StructuredConfig # The config in structured form
+    # config: StructuredConfig # The config in structured form
     
     # --- Optional Metadata Fields ---
     model: Optional[str] = None     

@@ -2,32 +2,35 @@ const { spawn } = require('child_process');
 const path = require('path');
 const os = require('os');
 
-// 1. Define the Backend Directory explicitly
-// This ensures we know exactly where we are, regardless of where the script is called from
 const backendDir = path.join(process.cwd(), 'fast-api');
 
-// 2. Detect Windows
 const isWin = os.platform() === 'win32';
 
-// 3. Construct the ABSOLUTE path to the Python executable
-// We use absolute paths to guarantee we find the venv, no matter the CWD.
-const pythonPath = isWin 
-    ? path.join(backendDir, '.venv', 'Scripts', 'python.exe') 
-    : path.join(backendDir, '.venv', 'bin', 'python');
+const venvBinDir = isWin 
+    ? path.join(backendDir, '.venv', 'Scripts')
+    : path.join(backendDir, '.venv', 'bin');
 
-// 4. Define arguments
+const pythonPath = path.join(venvBinDir, isWin ? 'python.exe' : 'python');
+
+// 5. Define arguments
 const args = ['-m', 'uvicorn', 'app.main:app', '--reload', '--host', '0.0.0.0'];
 
 console.log(`[Backend] Detected OS: ${os.platform()}`);
-console.log(`[Backend] Absolute Python Path: ${pythonPath}`);
-console.log(`[Backend] Working Directory: ${backendDir}`);
+console.log(`[Backend] Python Path: ${pythonPath}`);
 
-// 5. Spawn the process WITHOUT a shell
-// shell: false means we run the executable directly. This fixes the "/bin/sh" error.
+const newEnv = { ...process.env };
+
+newEnv.VIRTUAL_ENV = path.join(backendDir, '.venv');
+
+newEnv.PATH = venvBinDir + path.delimiter + (process.env.PATH || '');
+
+delete newEnv.PYTHONHOME;
+
 const child = spawn(pythonPath, args, {
     cwd: backendDir,
-    stdio: 'inherit', // Pipe output to console
-    shell: false      // <--- CRITICAL FIX
+    stdio: 'inherit',
+    shell: false, 
+    env: newEnv
 });
 
 child.on('error', (err) => {
