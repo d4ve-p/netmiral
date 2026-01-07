@@ -10,7 +10,7 @@ Quick setup:
 cd frontend
 npm install
 
-cd backend
+cd fast-api
 python -m venv .venv
 `Activate venv`
 .venv\Scripts\activate
@@ -21,3 +21,9 @@ go to root
 npm run dev
 
 this should start both, frontend and backend
+
+env variable:
+copy .env.example and modify
+
+database connection variable:
+fast-api/src/database.py
